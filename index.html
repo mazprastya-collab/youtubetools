@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YouTube Tools Suite</title>
+
+<style>
+html{
+    scroll-behavior:smooth;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#d2d2f2;
+    color:#333;
+}
+
+/* HEADER */
+header{
+    position:fixed;
+    top:0;
+    width:100%;
+    background:linear-gradient(90deg,#6a11cb,#2575fc);
+    color:white;
+    padding:15px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    z-index:1000;
+}
+
+header h1{
+    font-size:20px;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    margin-left:20px;
+    font-size:14px;
+    transition:0.3s;
+}
+
+nav a:hover{
+    opacity:0.7;
+}
+
+main{
+    margin-top:80px;
+}
+
+/* HERO */
+.hero{
+    height:90vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:20px;
+    background:linear-gradient(135deg,#ff6a00,#ee0979,#6a11cb);
+    color:white;
+    border-bottom-left-radius:40px;
+    border-bottom-right-radius:40px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.2);
+}
+
+.hero h2{
+    font-size:48px;
+    margin-bottom:20px;
+}
+
+.hero p{
+    font-size:18px;
+    max-width:650px;
+    margin-bottom:30px;
+}
+
+/* EXPLORE BUTTON - BIGGER THAN DOWNLOAD */
+.hero-btn{
+    padding:16px 45px;
+    font-size:18px;
+    background:white;
+    color:#6a11cb;
+    border:none;
+    border-radius:40px;
+    cursor:pointer;
+    font-weight:bold;
+    transition:0.3s;
+    box-shadow:0 10px 30px rgba(0,0,0,0.25);
+}
+
+.hero-btn:hover{
+    transform:translateY(-4px) scale(1.05);
+    background:#ffe600;
+    color:black;
+}
+
+/* SECTION */
+.section{
+    padding:80px 40px;
+    text-align:center;
+    background:white;
+    margin:60px auto;
+    width:90%;
+    max-width:1200px;
+    border-radius:30px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.08);
+    opacity:0;
+    transform:translateY(40px);
+    transition:all 0.8s ease;
+}
+
+.section.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+.section h3{
+    font-size:32px;
+    margin-bottom:40px;
+    color:#6a11cb;
+}
+
+/* TOOLS GRID */
+.tools{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:40px;
+}
+
+/* TOOL CARD */
+.tool-card{
+    padding:40px;
+    border-radius:20px;
+    background:#f8f9ff;
+    box-shadow:0 15px 35px rgba(0,0,0,0.1);
+    transition:0.3s;
+    border-top:5px solid #6a11cb;
+}
+
+.tool-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 20px 45px rgba(0,0,0,0.15);
+}
+
+.tool-card h4{
+    margin-bottom:15px;
+    color:#2575fc;
+}
+
+.tool-card p{
+    margin-bottom:15px;
+    font-size:15px;
+    color:#555;
+}
+
+/* BADGES */
+.meta{
+    margin-bottom:15px;
+}
+
+.badge{
+    display:inline-block;
+    background:#eee;
+    padding:5px 12px;
+    border-radius:15px;
+    font-size:12px;
+    margin:5px;
+}
+
+/* DOWNLOAD BUTTON */
+.btn-download{
+    display:inline-block;
+    margin-top:10px;
+    padding:12px 30px;
+    background:linear-gradient(135deg,#ff8c00,#ff5e00);
+    color:white;
+    border-radius:25px;
+    font-weight:bold;
+    text-decoration:none;
+    transition:0.3s;
+    box-shadow:0 8px 20px rgba(255,140,0,0.4);
+}
+
+.btn-download:hover{
+    transform:translateY(-3px);
+    box-shadow:0 12px 25px rgba(255,140,0,0.6);
+}
+
+/* GALLERY */
+.gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
+
+.gallery-grid img{
+    width:100%;
+    border-radius:15px;
+    cursor:pointer;
+    transition:0.3s;
+    box-shadow:0 5px 20px rgba(0,0,0,0.15);
+}
+
+.gallery-grid img:hover{
+    transform:scale(1.05);
+}
+
+/* LIGHTBOX */
+.lightbox{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.8);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    visibility:hidden;
+    opacity:0;
+    transition:0.3s;
+    z-index:2000;
+}
+
+.lightbox img{
+    max-width:90%;
+    max-height:90%;
+    border-radius:10px;
+}
+
+.lightbox.show{
+    visibility:visible;
+    opacity:1;
+}
+
+/* FOOTER */
+footer{
+    background:linear-gradient(90deg,#6a11cb,#2575fc);
+    color:white;
+    text-align:center;
+    padding:50px 20px; /* lebih tinggi */
+}
+
+footer h4{
+    font-size:18px;
+    margin-bottom:10px;
+    font-weight:bold;
+}
+
+footer p{
+    font-size:14px;
+    opacity:0.9;
+}
+
+@media(max-width:768px){
+    .hero h2{
+        font-size:32px;
+    }
+}
+</style>
+
+<script>
+function openLightbox(src){
+    document.getElementById("lightbox-img").src = src;
+    document.getElementById("lightbox").classList.add("show");
+}
+
+function closeLightbox(){
+    document.getElementById("lightbox").classList.remove("show");
+}
+
+window.addEventListener("scroll", function(){
+    document.querySelectorAll(".section").forEach(function(section){
+        const position = section.getBoundingClientRect().top;
+        const screenPosition = window.innerHeight / 1.2;
+        if(position < screenPosition){
+            section.classList.add("show");
+        }
+    });
+});
+</script>
+
+</head>
+<body>
+
+<header>
+    <h1>YouTube Tools Suite</h1>
+    <nav>
+        <a href="#tools">Tools</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#about">About</a>
+    </nav>
+</header>
+
+<main>
+
+<section class="hero">
+    <h2>Powerful YouTube Tools</h2>
+    <p>
+        Download videos, playlists, channels, or generate short clips from podcasts.
+        Fast, lightweight, and fully portable.
+    </p>
+    <button class="hero-btn" onclick="document.getElementById('tools').scrollIntoView({behavior:'smooth'})">
+        Explore Tools
+    </button>
+</section>
+
+<section id="tools" class="section">
+    <h3>Available Tools</h3>
+        <div class="tools">
+
+        <!-- DOWNLOADER -->
+        <div class="tool-card">
+            <h4>YouTube Downloader</h4>
+
+            <p>
+                Download single videos, playlists, or entire channels.
+                Batch mode, quality selection, and audio extraction supported.
+            </p>
+
+            <div class="meta">
+                <span class="badge">Version 1.0</span>
+                <span class="badge">Windows 10 / 11</span>
+                <span class="badge">.7z Portable</span>
+            </div>
+
+            <a href="https://github.com/mazprastya-collab/youtubetools/releases/download/v0.1/YouTubeDownloader.7z"
+               class="btn-download"
+               target="_blank">
+                Download YT Downloader
+            </a>
+            <div>
+            <small class="note">
+                If Windows shows SmartScreen warning → Click "More info" → "Run anyway".
+            </small>
+			</div>
+        </div>
+
+        <!-- CLIPPER -->
+        <div class="tool-card">
+            <h4>YouTube Short Clipper</h4>
+
+            <p>
+                Automatically generate short clips from long videos or podcasts.
+                Perfect for TikTok, Reels, and YouTube Shorts.
+            </p>
+
+            <div class="meta">
+                <span class="badge">Version 1.0</span>
+                <span class="badge">Windows 10 / 11</span>
+                <span class="badge">.7z Portable</span>
+            </div>
+
+            <a href="https://github.com/mazprastya-collab/youtubetools/releases/download/v1.0/YouTubeShortClipper.7z"
+               class="btn-download"
+               target="_blank">
+                Download YTS Clipper
+            </a>
+            <div>
+            <small class="note">
+                Extract first, then run the .exe file.
+            </small>
+			</div>
+        </div>
+
+</section>
+
+<section id="gallery" class="section">
+    <h3>App Screenshot</h3>
+    <div class="gallery-grid">
+        <img src="images/downloader1.png" onclick="openLightbox(this.src)">
+        <img src="images/downloader2.png" onclick="openLightbox(this.src)">
+        <img src="images/clipper1.png" onclick="openLightbox(this.src)">
+        <img src="images/clipper2.png" onclick="openLightbox(this.src)">
+    </div>
+</section>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <img id="lightbox-img">
+</div>
+
+<section id="about" class="section">
+    <h3>About</h3>
+    <p>
+        Lightweight desktop tools built for speed and flexibility.
+    </p>
+</section>
+
+</main>
+
+<footer>
+    <h4>YouTube Tools Suite</h4>
+    <p>Lightweight Desktop Tools for Content Creators</p>
+    <p>© 2026 All Rights Reserved</p>
+	<p>Made with ❤️ Indonesia</p>
+</footer>
+
+</body>
+</html>
